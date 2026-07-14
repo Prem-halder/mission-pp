@@ -37,7 +37,9 @@ def num_game(high,low,play):
         num_game(high,low,play)
     
     while True:
-        if ch!=5 and play==0:
+        if ch==5 and play>0:
+            break
+        else:
             while True:
                 try:
                     guess=int(input("Guess the Number:"))
@@ -72,8 +74,6 @@ def num_game(high,low,play):
             else:
                 guesses+=1
                 print("Guess Higher!!")
-        else:
-            break
     
 high,low,play=0,0,0
 print("Choose Difficulty:")
