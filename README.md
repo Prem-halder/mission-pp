@@ -1,5 +1,5 @@
 # mission-pp
-This is where it all started. The journey of success.
+This is where it all started. The journey of a avg student.
 This repository documents my journey from a student of BSC Computer Science (hons) to a software developer.
 
 ## Goals
