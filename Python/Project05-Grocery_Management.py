@@ -68,8 +68,8 @@ def grocery_store():
             print("CART IS EMPTY!!")
         else:
             total=0
-            for temp in grocery.keys():
-                if temp in cart.keys():
+            for temp in grocery:
+                if temp in cart:
                     print(f" {temp} x",cart[temp])
                     print(" PRICE :",grocery[temp])
                     total+=cart[temp]*grocery[temp]
@@ -86,7 +86,8 @@ def grocery_store():
             else:
                 name=input("ENTER YOUR NAME :")
                 print("================================")
-                print(" THANKS FOR PURCHASING FROM US!")
+                print(" THANKS FOR PURCHASING FROM US! ")
+                print("================================")
                 print(" NAME :",name)
                 print(" BILL NUMBER :",last["last_num:"]+1)
                 view(cart,grocery)
@@ -100,16 +101,17 @@ def grocery_store():
                     bill_str+=f" {n} x {cart[n]},"
                     total+=cart[n]*grocery[n]
                 
-                n=last["last_num:"]+1
-                bills[n]={"NAME :":name,"TOTAL AMOUNT OF CROCERY:":total,"GROCERY:":bill_str}
+                num=last["last_num:"]+1
+                bills[num]={"NAME :":name,"TOTAL AMOUNT OF CROCERY:":total,"GROCERY:":bill_str}
                 save("bill.json",bills)
-                save("last_bill_num.json",n)
+                last["last_num:"]=num
+                save("last_bill_num.json",last)
                 save("cart.json",{})
                 admin["Total"]+=total
                 save("grocery_admin.json",admin)
                 break
         
-    def login(load):
+    def login():
         name=input("ENTER ADMIN NAME :")
         Pass=input("ENTER PASSWORD :")
         load=load("grocery_admin.json")
@@ -124,7 +126,12 @@ def grocery_store():
             check=input("DO YOU WANT TO ADD A PRODUCT(Y/N) :")
             if check=="Y" or check=="y":
                 pro=input("ENTER PRODUCT NAME :")
-                price=int(input("ENTER PRODUCT'S PRICE :"))
+                while True:
+                    try:
+                        price=int(input("ENTER PRODUCT'S PRICE :"))
+                        break
+                    except ValueError:
+                        print("NUMBERS ONLY!!")
                 load[f"{pro} :"]=price
             elif check=="N" or check=="n":
                 save("grocery.json",load)
@@ -205,6 +212,7 @@ def grocery_store():
         elif ch==2:
             print("IF YOU RE-ENTER A ALREADY EXISTING ITEM IN THE CART ENTER THE NEW TOTAL QUANTITY!!")
             cart=load("cart.json")
+            grocery=load("grocery.json")
             while True:
                 choice=input("ENTER PRODUCT YOU WANT TO ADD TO CART(LEAVE BLANK TO EXIT) :")
                 temp=f"{choice.upper().rstrip()} :"
@@ -212,9 +220,11 @@ def grocery_store():
                 if choice.strip()=="":
                     save("cart.json",cart)
                     break
-                else:
+                elif temp in grocery:
                     quan=quantity()
-                    cart[temp]=quan                    
+                    cart[temp]=quan
+                else:
+                    print("ITEM NOT AVAILABLE IN PRODUCT LIST!!")                  
 
         elif ch==3:
             cart=load("cart.json")
@@ -236,9 +246,8 @@ def grocery_store():
         elif ch==6:
             print("ENTERED ADMIN PANEL!!")
             print("LOGIN FIRST!!")
-            load=load("grocery_admin.json")
 
-            if login(load):
+            if login():
                 while True:
                     print("======= ADMIN PANEL =======")
                     print("1.SHOW PRODUCTS.")
