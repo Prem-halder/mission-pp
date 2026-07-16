@@ -56,12 +56,30 @@ def school():
         load=load_data()
         load[roll]={"name":name,"marks":marks}
         save_data(load)
+
+    def search(roll,load):
+        print("NAME :",load[roll]["name"])
+        print("MARKS :",load[roll]["marks"])
+    
+    def update(roll,load):
+        print("IF YOU DON'T WANT TO CHANGE SOME DATA PUT IT AS IT IS BELOW!!")
+        print("NAME :",load[roll]["name"],"MARKS :",load[roll]["marks"])
+        name=get_name()
+        marks=get_marks()
+        temp={"name":name,"marks":marks}
+        load[roll]=temp
+        save_data(load)
+        print("STUDENT'S DATA UPDATED SUCCESSFULLY!!")
+
+    def delete(roll,load):
+        load.pop(roll)
+        save_data(load)
+        print("STUDENT'S DATA DELETED SUCCESSFULLY!!")
     
     def topper(load):
-        while True:
-            if not load:
-                print("NO DATA IN FILE THAT CAN BE DELETED!!")
-                break
+        if not load:
+            print("NO DATA IN FILE THAT CAN BE DELETED!!")
+        else:
             check=0
             roll=0
             for n in load.keys():
@@ -73,10 +91,9 @@ def school():
             print(f"TOPPED WITH {check} MARKS")
 
     def average(load):
-        while True:
-            if not load:
-                print("NO DATA IN FILE THAT CAN BE DELETED!!")
-                break
+        if not load:
+            print("NO DATA IN FILE THAT CAN BE DELETED!!")
+        else:
             num=0
             student_count=0
             for n in load.keys():
@@ -108,7 +125,7 @@ def school():
             roll=get_roll()
             name=get_name()
             marks=get_marks()
-            if roll_check(roll):
+            if roll_check(roll)!=True:
                 add_student(roll,name,marks)
                 print("STUDENT'S DATA ENTERED SUCCESSFULLY!!")
             else:
@@ -126,34 +143,24 @@ def school():
             roll=get_roll()
             load=load_data()
             if roll_check(roll):
-                print(load[roll])
+                search(roll,load)
 
         elif ch==4:
             roll=get_roll()
             load=load_data()
             if roll_check(roll):
-                print("IF YOU DON'T WANT TO CHANGE SOME DATA PUT IT AS IT IS BELOW!!")
-                print(load[roll])
-                name=get_name()
-                marks=get_marks()
-                temp={"name":name,"marks":marks}
-                load[roll]=temp
-                save_data(load)
-                print("STUDENT'S DATA UPDATED SUCCESSFULLY!!")
+                update(roll,load)
                                   
         elif ch==5:
             print("DELETION OF DATA SELECTED!!")
             roll=get_roll()
             load=load_data()
             if roll_check(roll):
-                load.pop(roll)
-                save_data(load)
-                print("STUDENT'S DATA DELETED SUCCESSFULLY!!")
+                delete(roll,load)
 
         elif ch==6:
-            while True:
-                load=load_data()
-                topper(load)
+            load=load_data()
+            topper(load)
 
         elif ch==7:
             load=load_data()
